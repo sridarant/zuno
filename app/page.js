@@ -4,25 +4,28 @@ import Logo from "../components/Logo";
 import ZunoCharacter from "../components/ZunoCharacter";
 
 export default function Home(){
-  return(
-    <main style={{textAlign:'center',paddingTop:'120px',height:'100vh',position:'relative'}}>
-      <ZunoCharacter/>
-      <Logo/>
-      <h1 style={{marginTop:20,fontSize:32}}>
-        Most kids rush.<br/>You won’t 😏
-      </h1>
-      <a href="/practice" style={{
-        display:'inline-block',
-        marginTop:30,
-        padding:'16px 28px',
-        borderRadius:18,
-        background:'linear-gradient(90deg,#7c3aed,#a78bfa)',
-        color:'#fff',
-        textDecoration:'none',
-        fontWeight:'bold'
-      }}>
-        Start Challenge
-      </a>
-    </main>
-  )
+return(
+<main style={{
+display:'flex',
+flexDirection:'column',
+alignItems:'center',
+justifyContent:'center',
+height:'100vh',
+textAlign:'center'
+}}>
+<Logo/>
+<ZunoCharacter/>
+<h1>Most kids rush.<br/>You won’t 😏</h1>
+<a href="/practice" style={{
+marginTop:20,
+padding:'14px 24px',
+borderRadius:14,
+background:'#7c3aed',
+color:'#fff',
+textDecoration:'none'
+}}>
+Start Challenge
+</a>
+</main>
+);
 }
