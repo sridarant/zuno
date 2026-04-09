@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { questions } from '../../utils/questions';
-import { getHint } from '../../utils/hints';
-import { supabase } from '../../lib/supabase';
+import ZunoBlob from "../../components/ZunoBlob";
+import { questions } from "../../utils/questions";
+import { supabase } from "../../lib/supabase";
 
 export default function Practice(){
 
@@ -10,8 +10,6 @@ export default function Practice(){
   const [phase,setPhase]=useState("intro");
   const [input,setInput]=useState('');
   const [msg,setMsg]=useState('');
-  const [hint,setHint]=useState('');
-  const [hintLevel,setHintLevel]=useState(0);
   const [face,setFace]=useState("😏");
 
   useEffect(()=>{ loadQ(); },[]);
@@ -21,8 +19,6 @@ export default function Practice(){
     setQ(next);
     setPhase("intro");
     setInput('');
-    setHint('');
-    setHintLevel(0);
     setFace("😏");
     setMsg("Got one for you… ready?");
 
@@ -30,14 +26,6 @@ export default function Practice(){
       setPhase("question");
       setMsg("Try it properly… don’t rush");
     },1000);
-  };
-
-  const startThink = ()=>{
-    setPhase("think");
-    setTimeout(()=>{
-      setPhase("input");
-      setMsg("Alright… show me");
-    },1500);
   };
 
   const submit=async ()=>{
@@ -55,9 +43,6 @@ export default function Practice(){
       setMsg("That was clean");
       setTimeout(loadQ,1500);
     }else{
-      const lvl = hintLevel+1;
-      setHintLevel(lvl);
-      setHint(getHint(q.concept,lvl));
       setFace("😏");
       setMsg("You rushed… didn’t you?");
     }
@@ -66,70 +51,51 @@ export default function Practice(){
   if(!q) return null;
 
   return(
-    <main style={{
-      padding:20,
-      maxWidth:420,
-      margin:'auto',
-      textAlign:'center'
-    }}>
+    <main style={{padding:20,maxWidth:420,margin:'auto',textAlign:'center'}}>
 
-      <div style={{fontSize:60,transition:'0.3s'}}>{face}</div>
+      <ZunoBlob face={face}/>
 
-      {(phase==="question" || phase==="think" || phase==="input") && (
+      {phase!=="intro" && (
         <div style={{
           background:'#0f172a',
           padding:24,
           borderRadius:20,
           marginTop:10
         }}>
-          <h2 style={{fontSize:28}}>{q.q}</h2>
+          <h2>{q.q}</h2>
         </div>
       )}
 
       {phase==="question" && (
-        <button onClick={startThink} style={btn}>
-          I’ll try it
-        </button>
+        <button onClick={()=>setPhase("input")} style={btn}>I’ll try it</button>
       )}
 
       {phase==="input" && (
         <>
-          <input 
-            value={input}
-            onChange={(e)=>setInput(e.target.value)}
-            style={{
-              marginTop:20,
-              padding:14,
-              width:'100%',
-              borderRadius:12
-            }}
-          />
+          <input value={input} onChange={(e)=>setInput(e.target.value)} style={inputStyle}/>
           <button onClick={submit} style={btn}>Submit</button>
-
-          {hint && (
-            <div style={{
-              marginTop:12,
-              padding:12,
-              background:'#020617',
-              borderRadius:12
-            }}>
-              💡 {hint}
-            </div>
-          )}
         </>
       )}
 
-      <p style={{marginTop:12,opacity:0.8}}>{msg}</p>
+      <p style={{marginTop:15,opacity:0.7}}>{msg}</p>
 
     </main>
-  );
+  )
 }
 
 const btn = {
   marginTop:14,
   padding:'14px',
   width:'100%',
-  background:'#22c55e',
+  background:'#7c3aed',
   borderRadius:'12px',
+  color:'#fff',
   fontWeight:'bold'
+};
+
+const inputStyle = {
+  marginTop:20,
+  padding:14,
+  width:'100%',
+  borderRadius:12
 };

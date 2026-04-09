@@ -1,21 +1,33 @@
+import Logo from "../components/Logo";
+import ZunoBlob from "../components/ZunoBlob";
+
 export default function Home(){
   return(
-    <main style={{padding:30,textAlign:'center'}}>
-      <h1 style={{fontSize:42}}>⚡ Zuno</h1>
-      <p style={{opacity:0.7}}>Think before you answer 😏</p>
-      <a href="/practice" style={btn}>Start</a>
-    </main>
-  );
-}
+    <main style={{textAlign:'center',padding:'40px'}}>
 
-const btn = {
-  display:'block',
-  margin:'20px auto',
-  padding:'14px',
-  width:'200px',
-  background:'#38bdf8',
-  borderRadius:'12px',
-  color:'#000',
-  textDecoration:'none',
-  fontWeight:'bold'
-};
+      <Logo/>
+
+      <ZunoBlob/>
+
+      <h1 style={{marginTop:20,fontSize:30,lineHeight:1.3}}>
+        Most kids rush.<br/>You won’t 😏
+      </h1>
+
+      <a href="/practice" style={{
+        display:'inline-block',
+        marginTop:30,
+        padding:'16px 28px',
+        borderRadius:16,
+        background:'linear-gradient(90deg,#7c3aed,#a78bfa)',
+        color:'#fff',
+        textDecoration:'none',
+        fontWeight:'bold'
+      }}>
+        Start Challenge
+      </a>
+
+      <p style={{opacity:0.6,marginTop:20}}>Write it. Then answer.</p>
+
+    </main>
+  )
+}
