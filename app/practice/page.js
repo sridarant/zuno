@@ -13,98 +13,69 @@ export default function Practice(){
   const [hint,setHint]=useState('');
   const [hintLevel,setHintLevel]=useState(0);
   const [ready,setReady]=useState(false);
-  const [weakConcept,setWeakConcept]=useState(null);
 
   useEffect(()=>{
-    loadWeakConcept();
+    loadQ();
   },[]);
 
-  const loadWeakConcept = async ()=>{
-    const { data } = await supabase
-      .from('attempts')
-      .select('concept, correct');
-
-    if(!data || data.length===0){
-      loadQ(null);
-      return;
-    }
-
-    const stats = {};
-    data.forEach(d=>{
-      if(!stats[d.concept]) stats[d.concept]={total:0,correct:0};
-      stats[d.concept].total++;
-      if(d.correct) stats[d.concept].correct++;
-    });
-
-    let weakest=null, lowest=1;
-    Object.keys(stats).forEach(c=>{
-      const acc = stats[c].correct / stats[c].total;
-      if(acc < lowest){
-        lowest = acc;
-        weakest = c;
-      }
-    });
-
-    setWeakConcept(weakest);
-    loadQ(weakest);
-  };
-
-  const loadQ = (concept)=>{
-    let pool = questions;
-    if(concept){
-      const filtered = questions.filter(q=>q.concept===concept);
-      if(filtered.length>0) pool = filtered;
-    }
-
-    const selected = pool[Math.floor(Math.random()*pool.length)];
-    setQ(selected);
-
+  const loadQ = ()=>{
+    setQ(questions[Math.floor(Math.random()*questions.length)]);
     setPhase("think");
     setInput('');
     setHint('');
     setHintLevel(0);
-    setMsg("Try this one ✍️");
+    setMsg("Try this… I’ll wait 👀");
     setReady(false);
-
     setTimeout(()=>setReady(true),2000);
   };
 
   const start = ()=>{
     if(!ready) return;
     setPhase("input");
-    setMsg("Your answer?");
+    setMsg("What did you get?");
   };
 
   const submit=async ()=>{
     const correct = Number(input)===q.a;
 
     await supabase.from('attempts').insert([{
+      user_id: "demo_user",
       question: q.q,
       concept: q.concept,
       correct
     }]);
 
     if(correct){
-      setMsg("Nice 😏");
-      setTimeout(()=>loadWeakConcept(),1200);
+      setMsg("That was clean 😏");
+      setTimeout(loadQ,1200);
     }else{
-      const level = hintLevel + 1;
-      setHintLevel(level);
-      setHint(getHint(q.concept, level));
-      setMsg("Try again 👀");
+      const lvl = hintLevel+1;
+      setHintLevel(lvl);
+      setHint(getHint(q.concept,lvl));
+      setMsg("Not quite… try again 👀");
     }
   };
 
   if(!q) return null;
 
   return(
-    <main style={{padding:24,maxWidth:420,margin:'auto',textAlign:'center'}}>
+    <main style={{
+      padding:24,
+      maxWidth:420,
+      margin:'auto',
+      textAlign:'center'
+    }}>
 
-      <h2>{q.q}</h2>
+      <div style={{fontSize:50}}>😏</div>
 
-      {weakConcept && (
-        <p style={{opacity:0.6}}>Focusing on: {weakConcept}</p>
-      )}
+      <div style={{
+        background:'#0f172a',
+        padding:20,
+        borderRadius:20,
+        marginTop:10
+      }}>
+        <h2>{q.q}</h2>
+      </div>
 
       {phase==="think" && (
         <>
@@ -120,11 +91,20 @@ export default function Practice(){
           <input 
             value={input}
             onChange={(e)=>setInput(e.target.value)}
-            style={{marginTop:20,padding:12,width:'100%'}}
+            style={{marginTop:20,padding:12,width:'100%',borderRadius:10}}
           />
           <button onClick={submit} style={btn}>Submit</button>
 
-          {hint && <div style={{marginTop:10}}>💡 {hint}</div>}
+          {hint && (
+            <div style={{
+              marginTop:10,
+              background:'#020617',
+              padding:10,
+              borderRadius:10
+            }}>
+              💡 {hint}
+            </div>
+          )}
         </>
       )}
 
@@ -135,7 +115,9 @@ export default function Practice(){
 }
 
 const btn = {
-  marginTop:10,
+  marginTop:12,
   padding:'12px',
-  width:'100%'
+  width:'100%',
+  background:'#22c55e',
+  borderRadius:'10px'
 };
