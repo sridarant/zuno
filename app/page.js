@@ -9,8 +9,8 @@ export default function Home(){
 
       <ZunoBlob/>
 
-      <h1 style={{marginTop:20,fontSize:30,lineHeight:1.3}}>
-        Most kids rush.<br/>You won’t 😏
+      <h1 style={{marginTop:20,fontSize:30}}>
+        Most kids rush.<br/>You won’t
       </h1>
 
       <a href="/practice" style={{

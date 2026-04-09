@@ -1,10 +1,11 @@
 export default function Logo(){
   return(
     <div style={{
-      fontSize:42,
+      fontSize:44,
       fontWeight:900,
-      letterSpacing:1.5,
-      background:'linear-gradient(90deg,#8b5cf6,#c4b5fd)',
+      letterSpacing:2,
+      transform:'skewX(-5deg)',
+      background:'linear-gradient(90deg,#7c3aed,#c4b5fd)',
       WebkitBackgroundClip:'text',
       color:'transparent'
     }}>

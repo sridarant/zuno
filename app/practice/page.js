@@ -10,7 +10,7 @@ export default function Practice(){
   const [phase,setPhase]=useState("intro");
   const [input,setInput]=useState('');
   const [msg,setMsg]=useState('');
-  const [face,setFace]=useState("😏");
+  const [mood,setMood]=useState("idle");
 
   useEffect(()=>{ loadQ(); },[]);
 
@@ -19,13 +19,16 @@ export default function Practice(){
     setQ(next);
     setPhase("intro");
     setInput('');
-    setFace("😏");
-    setMsg("Got one for you… ready?");
+    setMood("idle");
+    setMsg("Wait… don’t rush.");
+
+    setTimeout(()=>{
+      setMsg("Take a paper. Try this.");
+    },1200);
 
     setTimeout(()=>{
       setPhase("question");
-      setMsg("Try it properly… don’t rush");
-    },1000);
+    },2500);
   };
 
   const submit=async ()=>{
@@ -39,11 +42,11 @@ export default function Practice(){
     }]);
 
     if(correct){
-      setFace("😎");
-      setMsg("That was clean");
+      setMood("correct");
+      setMsg("That was clean.");
       setTimeout(loadQ,1500);
     }else{
-      setFace("😏");
+      setMood("wrong");
       setMsg("You rushed… didn’t you?");
     }
   };
@@ -53,24 +56,26 @@ export default function Practice(){
   return(
     <main style={{padding:20,maxWidth:420,margin:'auto',textAlign:'center'}}>
 
-      <ZunoBlob face={face}/>
-
-      {phase!=="intro" && (
-        <div style={{
-          background:'#0f172a',
-          padding:24,
-          borderRadius:20,
-          marginTop:10
-        }}>
-          <h2>{q.q}</h2>
-        </div>
-      )}
+      <ZunoBlob mood={mood}/>
 
       {phase==="question" && (
-        <button onClick={()=>setPhase("input")} style={btn}>I’ll try it</button>
+        <>
+          <div style={{
+            background:'#0f172a',
+            padding:24,
+            borderRadius:20,
+            marginTop:10
+          }}>
+            <h2>{q.q}</h2>
+          </div>
+
+          <button onClick={()=>setPhase("commit")} style={btn}>
+            I’ve written it
+          </button>
+        </>
       )}
 
-      {phase==="input" && (
+      {phase==="commit" && (
         <>
           <input value={input} onChange={(e)=>setInput(e.target.value)} style={inputStyle}/>
           <button onClick={submit} style={btn}>Submit</button>
