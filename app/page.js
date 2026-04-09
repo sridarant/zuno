@@ -1,5 +1,5 @@
 import Logo from "../components/Logo";
-import ZunoBlob from "../components/ZunoBlob";
+import ZunoCharacter from "../components/ZunoCharacter";
 
 export default function Home(){
   return(
@@ -7,10 +7,10 @@ export default function Home(){
 
       <Logo/>
 
-      <ZunoBlob/>
+      <ZunoCharacter/>
 
-      <h1 style={{marginTop:20,fontSize:30}}>
-        Most kids rush.<br/>You won’t
+      <h1 style={{marginTop:20,fontSize:32,lineHeight:1.3}}>
+        Most kids rush.<br/>You won’t 😏
       </h1>
 
       <a href="/practice" style={{

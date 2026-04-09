@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import ZunoBlob from "../../components/ZunoBlob";
+import ZunoCharacter from "../../components/ZunoCharacter";
 import { questions } from "../../utils/questions";
 import { supabase } from "../../lib/supabase";
 
@@ -22,13 +22,8 @@ export default function Practice(){
     setMood("idle");
     setMsg("Wait… don’t rush.");
 
-    setTimeout(()=>{
-      setMsg("Take a paper. Try this.");
-    },1200);
-
-    setTimeout(()=>{
-      setPhase("question");
-    },2500);
+    setTimeout(()=>setMsg("Take a paper. Try this."),1200);
+    setTimeout(()=>setPhase("question"),2500);
   };
 
   const submit=async ()=>{
@@ -43,7 +38,7 @@ export default function Practice(){
 
     if(correct){
       setMood("correct");
-      setMsg("That was clean.");
+      setMsg("That was clean 😏");
       setTimeout(loadQ,1500);
     }else{
       setMood("wrong");
@@ -56,7 +51,7 @@ export default function Practice(){
   return(
     <main style={{padding:20,maxWidth:420,margin:'auto',textAlign:'center'}}>
 
-      <ZunoBlob mood={mood}/>
+      <ZunoCharacter mood={mood}/>
 
       {phase==="question" && (
         <>
