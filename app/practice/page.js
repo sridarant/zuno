@@ -20,10 +20,11 @@ export default function Practice(){
     setPhase("intro");
     setInput('');
     setMood("idle");
+
     setMsg("Wait...");
-    setTimeout(()=>setMsg("Don’t rush."),1000);
-    setTimeout(()=>setMsg("Take a paper. Try this."),2000);
-    setTimeout(()=>setPhase("question"),3200);
+    setTimeout(()=>setMsg("Don’t rush."),900);
+    setTimeout(()=>setMsg("Take a paper. Try this."),1800);
+    setTimeout(()=>setPhase("question"),3000);
   };
 
   const submit=async ()=>{
@@ -39,10 +40,10 @@ export default function Practice(){
     if(correct){
       setMood("correct");
       setMsg("That was clean 😏");
-      setTimeout(loadQ,1500);
+      setTimeout(loadQ,1600);
     }else{
       setMood("wrong");
-      setMsg("You rushed… didn’t you?");
+      setMsg("Try that again… properly.");
     }
   };
 
@@ -56,9 +57,9 @@ export default function Practice(){
         <>
           <div style={{
             background:'#0f172a',
-            padding:24,
+            padding:26,
             borderRadius:20,
-            marginTop:10
+            marginTop:12
           }}>
             <h2>{q.q}</h2>
           </div>
@@ -76,7 +77,7 @@ export default function Practice(){
         </>
       )}
 
-      <p style={{marginTop:15,opacity:0.7}}>{msg}</p>
+      <p style={{marginTop:18,opacity:0.75}}>{msg}</p>
     </main>
   )
 }
@@ -86,7 +87,7 @@ const btn = {
   padding:'14px',
   width:'100%',
   background:'#7c3aed',
-  borderRadius:'12px',
+  borderRadius:'14px',
   color:'#fff',
   fontWeight:'bold'
 };

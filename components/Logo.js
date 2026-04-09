@@ -1,14 +1,14 @@
 export default function Logo(){
   return(
     <div style={{
-      fontSize:42,
+      fontSize:44,
       fontWeight:800,
-      letterSpacing:1.5,
-      background:'linear-gradient(90deg,#8b5cf6,#c4b5fd)',
+      letterSpacing:1.2,
+      background:'linear-gradient(90deg,#7c3aed,#c4b5fd)',
       WebkitBackgroundClip:'text',
       color:'transparent'
     }}>
-      Zun<span style={{display:'inline-block'}}>o</span>
+      Zu<span style={{letterSpacing:0}}>no</span>
     </div>
   )
 }
