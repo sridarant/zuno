@@ -20,10 +20,10 @@ export default function Practice(){
     setPhase("intro");
     setInput('');
     setMood("idle");
-    setMsg("Wait… don’t rush.");
-
-    setTimeout(()=>setMsg("Take a paper. Try this."),1200);
-    setTimeout(()=>setPhase("question"),2500);
+    setMsg("Wait...");
+    setTimeout(()=>setMsg("Don’t rush."),1000);
+    setTimeout(()=>setMsg("Take a paper. Try this."),2000);
+    setTimeout(()=>setPhase("question"),3200);
   };
 
   const submit=async ()=>{
@@ -50,7 +50,6 @@ export default function Practice(){
 
   return(
     <main style={{padding:20,maxWidth:420,margin:'auto',textAlign:'center'}}>
-
       <ZunoCharacter mood={mood}/>
 
       {phase==="question" && (
@@ -78,7 +77,6 @@ export default function Practice(){
       )}
 
       <p style={{marginTop:15,opacity:0.7}}>{msg}</p>
-
     </main>
   )
 }

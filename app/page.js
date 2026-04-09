@@ -4,15 +4,11 @@ import ZunoCharacter from "../components/ZunoCharacter";
 export default function Home(){
   return(
     <main style={{textAlign:'center',padding:'40px'}}>
-
       <Logo/>
-
       <ZunoCharacter/>
-
-      <h1 style={{marginTop:20,fontSize:32,lineHeight:1.3}}>
-        Most kids rush.<br/>You won’t 😏
+      <h1 style={{marginTop:20,fontSize:30}}>
+        Most kids rush.<br/>You won’t
       </h1>
-
       <a href="/practice" style={{
         display:'inline-block',
         marginTop:30,
@@ -25,9 +21,7 @@ export default function Home(){
       }}>
         Start Challenge
       </a>
-
       <p style={{opacity:0.6,marginTop:20}}>Write it. Then answer.</p>
-
     </main>
   )
 }

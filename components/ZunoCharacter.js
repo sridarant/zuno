@@ -2,10 +2,11 @@ export default function ZunoCharacter({ mood="idle" }){
 
   const eye = {
     width:18,
-    height:22,
+    height:20,
     background:'#0f172a',
     borderRadius:'50%',
-    margin:'0 6px'
+    margin:'0 6px',
+    animation:'blink 4s infinite'
   };
 
   return(
