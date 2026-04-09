@@ -7,58 +7,59 @@ import { supabase } from '../../lib/supabase';
 export default function Practice(){
 
   const [q,setQ]=useState(null);
-  const [phase,setPhase]=useState("think");
+  const [phase,setPhase]=useState("intro");
   const [input,setInput]=useState('');
   const [msg,setMsg]=useState('');
   const [hint,setHint]=useState('');
   const [hintLevel,setHintLevel]=useState(0);
-  const [ready,setReady]=useState(false);
   const [face,setFace]=useState("😏");
 
   useEffect(()=>{ loadQ(); },[]);
 
   const loadQ = ()=>{
-    setQ(questions[Math.floor(Math.random()*questions.length)]);
-    setPhase("think");
+    const next = questions[Math.floor(Math.random()*questions.length)];
+    setQ(next);
+    setPhase("intro");
     setInput('');
     setHint('');
     setHintLevel(0);
-    setMsg("Try it properly… I’m watching 😏");
     setFace("😏");
-    setReady(false);
-    setTimeout(()=>setReady(true),2500);
+    setMsg("Got one for you… ready?");
+
+    setTimeout(()=>{
+      setPhase("question");
+      setMsg("Try it properly… don’t rush");
+    },1000);
   };
 
-  const start = ()=>{
-    if(!ready) return;
-    setPhase("input");
-    setMsg("Alright… show me");
+  const startThink = ()=>{
+    setPhase("think");
+    setTimeout(()=>{
+      setPhase("input");
+      setMsg("Alright… show me");
+    },1500);
   };
 
   const submit=async ()=>{
     const correct = Number(input)===q.a;
 
-    try{
-      await supabase.from('attempts').insert([{
-        user_id:"demo_user",
-        question:q.q,
-        concept:q.concept,
-        correct
-      }]);
-    }catch(e){
-      console.log("Supabase error", e);
-    }
+    await supabase.from('attempts').insert([{
+      user_id:"demo_user",
+      question:q.q,
+      concept:q.concept,
+      correct
+    }]);
 
     if(correct){
       setFace("😎");
-      setMsg("Hmm… not bad");
-      setTimeout(loadQ,1200);
+      setMsg("That was clean");
+      setTimeout(loadQ,1500);
     }else{
       const lvl = hintLevel+1;
       setHintLevel(lvl);
       setHint(getHint(q.concept,lvl));
       setFace("😏");
-      setMsg("Nope… think again");
+      setMsg("You rushed… didn’t you?");
     }
   };
 
@@ -72,32 +73,23 @@ export default function Practice(){
       textAlign:'center'
     }}>
 
-      {/* Zuno Character */}
-      <div style={{
-        fontSize:60,
-        transition:'0.3s'
-      }}>
-        {face}
-      </div>
+      <div style={{fontSize:60,transition:'0.3s'}}>{face}</div>
 
-      {/* Question Card */}
-      <div style={{
-        background:'#0f172a',
-        padding:24,
-        borderRadius:20,
-        marginTop:10,
-        boxShadow:'0 10px 30px rgba(0,0,0,0.4)'
-      }}>
-        <h2 style={{fontSize:28}}>{q.q}</h2>
-      </div>
+      {(phase==="question" || phase==="think" || phase==="input") && (
+        <div style={{
+          background:'#0f172a',
+          padding:24,
+          borderRadius:20,
+          marginTop:10
+        }}>
+          <h2 style={{fontSize:28}}>{q.q}</h2>
+        </div>
+      )}
 
-      {phase==="think" && (
-        <>
-          <p style={{marginTop:12,opacity:0.8}}>{msg}</p>
-          <button disabled={!ready} onClick={start} style={btn}>
-            {ready ? "I wrote it" : "Thinking..."}
-          </button>
-        </>
+      {phase==="question" && (
+        <button onClick={startThink} style={btn}>
+          I’ll try it
+        </button>
       )}
 
       {phase==="input" && (
@@ -109,8 +101,7 @@ export default function Practice(){
               marginTop:20,
               padding:14,
               width:'100%',
-              borderRadius:12,
-              border:'none'
+              borderRadius:12
             }}
           />
           <button onClick={submit} style={btn}>Submit</button>
@@ -128,7 +119,7 @@ export default function Practice(){
         </>
       )}
 
-      <p style={{marginTop:10,opacity:0.7}}>{msg}</p>
+      <p style={{marginTop:12,opacity:0.8}}>{msg}</p>
 
     </main>
   );
