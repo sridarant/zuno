@@ -3,7 +3,7 @@ export default function RootLayout({ children }) {
     <html>
       <body style={{
         margin:0,
-        fontFamily:'Arial',
+        fontFamily:'Inter, Arial',
         background:'#020617',
         color:'white'
       }}>

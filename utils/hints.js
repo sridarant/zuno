@@ -1,6 +1,6 @@
 export function getHint(concept, level){
   const hints = {
-    addition: ["Think direction 👀","Start from first number","Move forward step by step"],
+    addition: ["Start from -5 👀","Move forward step by step","Where do you land?"],
     subtraction: ["Go backward 👀","Subtract step by step","Count carefully"],
     negative: ["Two negatives…","Combine them","Becomes more negative"]
   };

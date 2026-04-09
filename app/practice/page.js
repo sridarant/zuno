@@ -13,10 +13,9 @@ export default function Practice(){
   const [hint,setHint]=useState('');
   const [hintLevel,setHintLevel]=useState(0);
   const [ready,setReady]=useState(false);
+  const [face,setFace]=useState("😏");
 
-  useEffect(()=>{
-    loadQ();
-  },[]);
+  useEffect(()=>{ loadQ(); },[]);
 
   const loadQ = ()=>{
     setQ(questions[Math.floor(Math.random()*questions.length)]);
@@ -24,35 +23,42 @@ export default function Practice(){
     setInput('');
     setHint('');
     setHintLevel(0);
-    setMsg("Try this… I’ll wait 👀");
+    setMsg("Try it properly… I’m watching 😏");
+    setFace("😏");
     setReady(false);
-    setTimeout(()=>setReady(true),2000);
+    setTimeout(()=>setReady(true),2500);
   };
 
   const start = ()=>{
     if(!ready) return;
     setPhase("input");
-    setMsg("What did you get?");
+    setMsg("Alright… show me");
   };
 
   const submit=async ()=>{
     const correct = Number(input)===q.a;
 
-    await supabase.from('attempts').insert([{
-      user_id: "demo_user",
-      question: q.q,
-      concept: q.concept,
-      correct
-    }]);
+    try{
+      await supabase.from('attempts').insert([{
+        user_id:"demo_user",
+        question:q.q,
+        concept:q.concept,
+        correct
+      }]);
+    }catch(e){
+      console.log("Supabase error", e);
+    }
 
     if(correct){
-      setMsg("That was clean 😏");
+      setFace("😎");
+      setMsg("Hmm… not bad");
       setTimeout(loadQ,1200);
     }else{
       const lvl = hintLevel+1;
       setHintLevel(lvl);
       setHint(getHint(q.concept,lvl));
-      setMsg("Not quite… try again 👀");
+      setFace("😏");
+      setMsg("Nope… think again");
     }
   };
 
@@ -60,28 +66,36 @@ export default function Practice(){
 
   return(
     <main style={{
-      padding:24,
+      padding:20,
       maxWidth:420,
       margin:'auto',
       textAlign:'center'
     }}>
 
-      <div style={{fontSize:50}}>😏</div>
+      {/* Zuno Character */}
+      <div style={{
+        fontSize:60,
+        transition:'0.3s'
+      }}>
+        {face}
+      </div>
 
+      {/* Question Card */}
       <div style={{
         background:'#0f172a',
-        padding:20,
+        padding:24,
         borderRadius:20,
-        marginTop:10
+        marginTop:10,
+        boxShadow:'0 10px 30px rgba(0,0,0,0.4)'
       }}>
-        <h2>{q.q}</h2>
+        <h2 style={{fontSize:28}}>{q.q}</h2>
       </div>
 
       {phase==="think" && (
         <>
-          <p>{msg}</p>
+          <p style={{marginTop:12,opacity:0.8}}>{msg}</p>
           <button disabled={!ready} onClick={start} style={btn}>
-            {ready ? "I tried it" : "Thinking..."}
+            {ready ? "I wrote it" : "Thinking..."}
           </button>
         </>
       )}
@@ -91,16 +105,22 @@ export default function Practice(){
           <input 
             value={input}
             onChange={(e)=>setInput(e.target.value)}
-            style={{marginTop:20,padding:12,width:'100%',borderRadius:10}}
+            style={{
+              marginTop:20,
+              padding:14,
+              width:'100%',
+              borderRadius:12,
+              border:'none'
+            }}
           />
           <button onClick={submit} style={btn}>Submit</button>
 
           {hint && (
             <div style={{
-              marginTop:10,
+              marginTop:12,
+              padding:12,
               background:'#020617',
-              padding:10,
-              borderRadius:10
+              borderRadius:12
             }}>
               💡 {hint}
             </div>
@@ -108,16 +128,17 @@ export default function Practice(){
         </>
       )}
 
-      <p>{msg}</p>
+      <p style={{marginTop:10,opacity:0.7}}>{msg}</p>
 
     </main>
   );
 }
 
 const btn = {
-  marginTop:12,
-  padding:'12px',
+  marginTop:14,
+  padding:'14px',
   width:'100%',
   background:'#22c55e',
-  borderRadius:'10px'
+  borderRadius:'12px',
+  fontWeight:'bold'
 };
